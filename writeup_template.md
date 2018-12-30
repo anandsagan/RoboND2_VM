@@ -21,9 +21,7 @@
 [image3]: ./misc_images/misc2.png
 [dhpic]: ./misc_images/pic1.jpg
 [angpic]: ./misc_images/pic2.jpg
-[c1]: ./misc_images/comp1.png
-[c2]: ./misc_images/comp2.png
-[c3]: ./misc_images/comp3.png
+
 ---
 ### Writeup
 In order to successfully complete this project, I used the following environment:
@@ -43,17 +41,13 @@ $ roslaunch kuka_arm forward_kinematics.launch
 
 ![alt text][image1]
 
-#### 2. DH Parameter Table and Homogenous Transforms
+#### 2. Using the DH parameter table you derived earlier, create individual transformation matrices about each joint. In addition, also generate a generalized homogeneous transform between base_link and gripper_link using only end-effector(gripper) pose.
 
 We have to first extract the positions and orientation for each joint using the URDF file provided, `kr210.urdf.xacro`. Shown below is a sketch of the KUKA arms joints and links, and relevant parameters for the Modified DH parameter table where:
-**a(i-1)** is the Link Length measured from Z(i-1) to Z(i) along to X(i-1) axis
-
-**d(i)** is the Link Offset from X(i-1) to X(i) along Z(i) axis
-
-**alpha(i-1)** is the Twist Angle from Z(i-1) to Z(i) measured about X(i-1) axis
-
-**theta(i)** is the Joint Angle from X(i-1) to X(i) measured about Z(i) axis
-
+**Link Length**:a(i-1) = Z(i-1) to Z(i) along to X(i-1) axis
+**Link Offset**:d(i) = X(i-1) to X(i) along Z(i) axis
+**Link Twist**: alpha(i-1) = twist from Z(i-1) to Z(i) measured about X(i-1) axis
+**Joint Angle**: theta(i) = angle from X(i-1) to X(i) measured about Z(i) axis
 
 ![alt text][dhpic]
 
@@ -164,14 +158,14 @@ which results to the matrix below when all the q values are equal to 0:
 [0, 0, 0, 1]
 ```
 
-To correct for the orientation difference of the gripper_link  between URDF and DH convention, we need a matrix that rotates first about the y axis then the z axis. I implemented the transform below to do so:
+To correct for the orientation difference of the gripper link  between URDF and DH convention, we need a matrix that rotates first about the y axis then the z axis. I implemented the transform below to do so:
 
 ```sh
     Rerror = ROT_z.subs(y,radians(180))*ROT_y.subs(p,radians(-90))
 ```
 
 
-#### 3. Inverse Kinematics
+#### 3. Decouple Inverse Kinematics problem into Inverse Position Kinematics and inverse Orientation Kinematics; doing so derive the equations to calculate all individual joint angles.
 
 The final three joints in the KUKA KR210 robot that we use are all revolute and since thier joint axes intersect at a single point, we can identify this set of joints as a spherical wrist with the wrist center (WC) at Joint 5. We can now separate this Inverse Kinematics problem into Inverse Position and Inverse Orientation problems.
 
