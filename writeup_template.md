@@ -19,6 +19,9 @@
 [image1]: ./misc_images/misc1.png
 [image2]: ./misc_images/misc3.png
 [image3]: ./misc_images/misc2.png
+[c1]: ./misc_images/comp1.png
+[c2]: ./misc_images/comp2.png
+[c3]: ./misc_images/comp3.png
 [dhpic]: ./misc_images/pic1.jpg
 [angpic]: ./misc_images/pic2.jpg
 
