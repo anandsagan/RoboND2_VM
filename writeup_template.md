@@ -35,7 +35,7 @@ In order to successfully complete this project, I used the following environment
 
 
 ### Kinematic Analysis
-#### Running Forward Kinematics Demo
+#### 1. Running Forward Kinematics Demo
 I ran the forward kinematics demo as shown below to familarize myself with the RVIZ environment, and to see how each joint reacts when the joint space parameters were adjusted and the direction and orientation of each joint in the cartesian space. To run the demo, I ran the following shell script: 
 
 ```sh
@@ -44,9 +44,10 @@ $ roslaunch kuka_arm forward_kinematics.launch
 
 ![alt text][image1]
 
-#### 2. Using the DH parameter table you derived earlier, create individual transformation matrices about each joint. In addition, also generate a generalized homogeneous transform between base_link and gripper_link using only end-effector(gripper) pose.
+#### 2. Obtaining DH Parameter Table
 
 We have to first extract the positions and orientation for each joint using the URDF file provided, `kr210.urdf.xacro`. Shown below is a sketch of the KUKA arms joints and links, and relevant parameters for the Modified DH parameter table where:
+
 **a(i-1)**: Link Length from Z(i-1) to Z(i) along to X(i-1) axis
 
 **d(i)**: Link Offset from X(i-1) to X(i) along Z(i) axis
@@ -172,7 +173,7 @@ To correct for the orientation difference of the gripper link  between URDF and 
 ```
 
 
-#### 3. Decouple Inverse Kinematics problem into Inverse Position Kinematics and inverse Orientation Kinematics; doing so derive the equations to calculate all individual joint angles.
+#### 3. Calculating Joint Angles
 
 The final three joints in the KUKA KR210 robot that we use are all revolute and since thier joint axes intersect at a single point, we can identify this set of joints as a spherical wrist with the wrist center (WC) at Joint 5. We can now separate this Inverse Kinematics problem into Inverse Position and Inverse Orientation problems.
 
@@ -277,7 +278,7 @@ And then we can finally solve for `theta4`, `theta5`, and `theta6`
 
 ### Project Implementation
 
-#### 1. Fill in the `IK_server.py` file with properly commented python code for calculating Inverse Kinematics based on previously performed Kinematic Analysis. Your code must guide the robot to successfully complete 8/10 pick and place cycles. Briefly discuss the code you implemented and your results. 
+#### 1. Code Description And Results 
 
 The code is essentially a tool to help calculate the transformation matrices, perform inverse orientation and position problems, and to visualize the movement of the robot in the simulation. My code starts with importing the important modules, followed by initiallizing the symbols required to perform the kinematic analysis of this project. The code runs a service called `kuka_arm.srv` and uses `trajectory_msgs.msg` and `geometry_msgs.msg` to communicate with the robot. The code, `IK_server.py` can be found in the `scripts` folder of the `kuka_arm` directory. 
 
@@ -285,7 +286,9 @@ Using the roll, pitch, yaw, and positions of the end effector, we can determine 
 
 Using the rotation matrix only between Links 0 and 3 and the complete rotational matrix between the base_link and the end_effector, we can use the `inv` function to find the rotation matrix between Links 3 and 6. Finally, we can calculate `theta_4`, `theta_5`, and `theta_6`.
 
-To further improve the implementation of the IK_server code, we can try to optimize the planning code to include only key pointand to minimize any extra movement from the arm.
+All these joint angles are stored in the `joint_state_publisher` node and is sent to RVIZ to move the arm. Depending on the path of the arm, it will have several joint states for which the `IK_server` returns the joint angles for each one. The lower the amount fo joint states, the faster the arm will be.
+
+To further improve the implementation of the `IK_server` code, we can try to optimize the planning code to include only key pointand to minimize any extra movement from the arm.
 
 And here are some images of the completed pick and place process:
 ![alt text][c1]
