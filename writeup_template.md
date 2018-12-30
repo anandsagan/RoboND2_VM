@@ -21,7 +21,9 @@
 [image3]: ./misc_images/misc2.png
 [dhpic]: ./misc_images/pic1.jpg
 [angpic]: ./misc_images/pic2.jpg
-
+[c1]: ./misc_images/comp1.png
+[c2]: ./misc_images/comp2.png
+[c3]: ./misc_images/comp3.png
 ---
 ### Writeup
 In order to successfully complete this project, I used the following environment:
@@ -282,9 +284,9 @@ Using the roll, pitch, yaw, and positions of the end effector, we can determine 
 
 Using the rotation matrix only between Links 0 and 3 and the complete rotational matrix between the base_link and the end_effector, we can use the `inv` function to find the rotation matrix between Links 3 and 6. Finally, we can calculate `theta_4`, `theta_5`, and `theta_6`.
 
+To further improve the implementation of the IK_server code, we can try to optimize the planning code to include only key pointand to minimize any extra movement from the arm.
 
-
-And here's an image of the completed pick and place process:
-![alt text][image3]
-
-
+And here are some images of the completed pick and place process:
+![alt text][c1]
+![alt text][c2]
+![alt text][c3]
