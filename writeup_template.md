@@ -47,10 +47,10 @@ $ roslaunch kuka_arm forward_kinematics.launch
 #### 2. Using the DH parameter table you derived earlier, create individual transformation matrices about each joint. In addition, also generate a generalized homogeneous transform between base_link and gripper_link using only end-effector(gripper) pose.
 
 We have to first extract the positions and orientation for each joint using the URDF file provided, `kr210.urdf.xacro`. Shown below is a sketch of the KUKA arms joints and links, and relevant parameters for the Modified DH parameter table where:
-**Link Length**:a(i-1) = Z(i-1) to Z(i) along to X(i-1) axis
-**Link Offset**:d(i) = X(i-1) to X(i) along Z(i) axis
-**Link Twist**: alpha(i-1) = twist from Z(i-1) to Z(i) measured about X(i-1) axis
-**Joint Angle**: theta(i) = angle from X(i-1) to X(i) measured about Z(i) axis
+**a(i-1)**: Link Length from Z(i-1) to Z(i) along to X(i-1) axis
+**d(i)**: Link Offset from X(i-1) to X(i) along Z(i) axis
+**alpha(i-1)**: Twist Angle from Z(i-1) to Z(i) measured about X(i-1) axis
+**theta(i)**: Joint Angle from X(i-1) to X(i) measured about Z(i) axis
 
 ![alt text][dhpic]
 
