@@ -24,7 +24,7 @@
 [c3]: ./misc_images/comp3.png
 [dhpic]: ./misc_images/pic1.jpg
 [angpic]: ./misc_images/pic2.jpg
-
+[angpic2]: ./misc_images/pic3.jpg
 ---
 ### Writeup
 In order to successfully complete this project, I used the following environment:
@@ -235,7 +235,7 @@ Now, we can easily calculate `theta1`, the angle of the Joint 1 by simply doing 
 
 In order to calculate `theta2` and `theta3`, refer to the diagram below:
 
-![alt text][angpic]
+![alt text][angpic2]
 
 Then, we can use the law of cosines to calculate angles `a`, `b`, and `c`:
 
