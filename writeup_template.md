@@ -22,9 +22,14 @@
 [c1]: ./misc_images/comp1.png
 [c2]: ./misc_images/comp2.png
 [c3]: ./misc_images/comp3.png
+[c4]: ./misc_images/comp4.png
 [dhpic]: ./misc_images/pic1.jpg
 [angpic]: ./misc_images/pic2.jpg
 [angpic2]: ./misc_images/pic3.jpg
+[eq1]: ./misc_images/1.png
+[eq2]: ./misc_images/2.png
+[eq3]: ./misc_images/3.png
+[eq4]: ./misc_images/4.png
 
 
 ---
@@ -270,12 +275,26 @@ We can subsitute our values for the first three angles and multiply each side by
 	    R3_6 = R0_3.inv("LU")*ROT_EE
 ```
 
-And then we can finally solve for `theta4`, `theta5`, and `theta6`
+And then we can finally solve for `theta4`, `theta5`, and `theta6`. These three angles are the Euler Angles of the rotation matrix `R3_6` shown above. This matrix is determined by breaking down the overall rotation of the end effector as such: `R0_3 * R3_6 = ROT_EE`
+Refering to the images below, `theta4`, `theta5`, and `theta6` corresponds to gamma, beta, and alpha, respectively.
+
+![alt text][eq1]
+![alt text][eq2]
+![alt text][eq3]
+![alt text][eq4]
+
 
 ```sh
-	    theta4 = atan2(R3_6[2,2], -R3_6[0,2])
-	    theta5 = atan2(sqrt(R3_6[0,2]*R3_6[0,2]+R3_6[2,2]*R3_6[2,2]),R3_6[1,2])
-	    theta6 = atan2(-R3_6[1,1], R3_6[1,0])
+    r11 = R3_6[0,0]
+    r21 = R3_6[1,0]
+    r31 = R3_6[2,0]
+    r32 = R3_6[2,1]
+    r33 = R3_6[2,2]
+
+
+    theta6 = atan2( r21, r11).evalf()
+    theta5 = atan2(-r31, sqrt(r11**2 + r21**2)).evalf()
+    theta4 = atan2( r32, r33).evalf()
 ```
 
 ### Project Implementation
@@ -288,11 +307,12 @@ Using the roll, pitch, yaw, and positions of the end effector, we can determine 
 
 Using the rotation matrix only between Links 0 and 3 and the complete rotational matrix between the base_link and the end_effector, we can use the `inv` function to find the rotation matrix between Links 3 and 6. Finally, we can calculate `theta_4`, `theta_5`, and `theta_6`.
 
+For the results, the arm was able to place exactly 8/10 of the targets in the cylinder. I noticed that when the targets were on the bottom shelf, the gripper would knock it down before it could grasp it and therefore was unable to successfully complete the process. It consistently picks up the targets easily from the other shelves. The speed of the arm is very slow. As you can see from the screenshot below, it took me over an hour (real time) for 10 tests. This most likely had to do with running it on my slow laptop and on the VM. It took about 30 minutes of simulation time to perform these tests.
+
 All these joint angles are stored in the `joint_state_publisher` node and is sent to RVIZ to move the arm. Depending on the path of the arm, it will have several joint states for which the `IK_server` returns the joint angles for each one. The lower the amount fo joint states, the faster the arm will be.
 
 To further improve the implementation of the `IK_server` code, we can try to optimize the planning code to include only key pointand to minimize any extra movement from the arm.
 
 And here are some images of the completed pick and place process:
-![alt text][c1]
-![alt text][c2]
-![alt text][c3]
+![alt text][c4]
+
