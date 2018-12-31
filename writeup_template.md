@@ -284,11 +284,13 @@ We can use a similar method to that in the images below to solve for `theta4`, `
 ![alt text][eq3]
 ![alt text][eq4]
 
+Using this rotation matrix below, we can determine which values we want to use to solve for `theta4`, `theta5`, and `theta6`.
+
 **Rotation Matrix 3_6**
 
 ![alt text][rm1]
 
-Using this rotation matrix, we can determine which values we want to use to solve for `theta4`, `theta5`, and `theta6`:
+
 
 ```sh
 	    theta4 = (atan2(R3_6[2,2], -R3_6[0,2])).evalf()
