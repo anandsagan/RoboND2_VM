@@ -298,13 +298,8 @@ Using this rotation matrix below, we can determine which values we want to use t
 	    theta6 = (atan2(-R3_6[1,1], R3_6[1,0])).evalf()
 ```
 
-As you can see, `theta5` has a square root term in it, which leads to two possible solutions. I choose the positive value of `theta5` and this affects the signs on `theta4` and `theta6`. They are optimized to have the least movement:
+As you can see, `theta5` has a square root term in it, which leads to two possible solutions. I choose the positive value of `theta5` and this affects the signs on `theta4` and `theta6`. They are optimized to have the least movement.
 
-```sh
-	    theta4 = (atan2(R3_6[2,2], -R3_6[0,2])).evalf()
-	    theta6 = (atan2(-R3_6[1,1], R3_6[1,0])).evalf()
-	    theta5 = (atan2(sqrt(R3_6[0,2]*R3_6[0,2]+R3_6[2,2]*R3_6[2,2]),R3_6[1,2])).evalf()
-```
 
 
 ### Project Implementation
