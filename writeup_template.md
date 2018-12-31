@@ -30,6 +30,7 @@
 [eq2]: ./misc_images/2.png
 [eq3]: ./misc_images/3.png
 [eq4]: ./misc_images/4.png
+[rm1]: ./misc_images/5.png
 
 
 ---
@@ -276,26 +277,33 @@ We can subsitute our values for the first three angles and multiply each side by
 ```
 
 And then we can finally solve for `theta4`, `theta5`, and `theta6`. These three angles are the Euler Angles of the rotation matrix `R3_6` shown above. This matrix is determined by breaking down the overall rotation of the end effector as such: `R0_3 * R3_6 = ROT_EE`
-Refering to the images below, `theta4`, `theta5`, and `theta6` corresponds to gamma, beta, and alpha, respectively.
+We can use a similar method to that in the images below to solve for `theta4`, `theta5`, and `theta6`.
 
 ![alt text][eq1]
 ![alt text][eq2]
 ![alt text][eq3]
 ![alt text][eq4]
 
+**Rotation Matrix 3_6**
+
+![alt text][rm1]
+
+Using this rotation matrix, we can determine which values we want to use to solve for `theta4`, `theta5`, and `theta6`:
 
 ```sh
-    r11 = R3_6[0,0]
-    r21 = R3_6[1,0]
-    r31 = R3_6[2,0]
-    r32 = R3_6[2,1]
-    r33 = R3_6[2,2]
-
-
-    theta6 = atan2( r21, r11).evalf()
-    theta5 = atan2(-r31, sqrt(r11**2 + r21**2)).evalf()
-    theta4 = atan2( r32, r33).evalf()
+	    theta4 = (atan2(R3_6[2,2], -R3_6[0,2])).evalf()
+	    theta5 = (atan2(sqrt(R3_6[0,2]*R3_6[0,2]+R3_6[2,2]*R3_6[2,2]),R3_6[1,2])).evalf()
+	    theta6 = (atan2(-R3_6[1,1], R3_6[1,0])).evalf()
 ```
+
+As you can see, `theta5` has a square root term in it, which leads to two possible solutions. I choose the positive value of `theta5` and this affects the signs on `theta4` and `theta6`. They are optimized to have the least movement:
+
+```sh
+	    theta4 = (atan2(R3_6[2,2], -R3_6[0,2])).evalf()
+	    theta6 = (atan2(-R3_6[1,1], R3_6[1,0])).evalf()
+	    theta5 = (atan2(sqrt(R3_6[0,2]*R3_6[0,2]+R3_6[2,2]*R3_6[2,2]),R3_6[1,2])).evalf()
+```
+
 
 ### Project Implementation
 

@@ -126,20 +126,11 @@ def handle_calculate_IK(req):
 	    #use inverse of matrix calculated above and multiply by end effector orientation to find rotational matrix from link 3 to 6
 	    R3_6 = R0_3.inv("LU")*ROT_EE
 
-	    #using the rotation matrix from 3 to 6, we can find the values for the remaining angle
-	    r11 = R3_6[0,0]
-    	    r21 = R3_6[1,0]
-    	    r31 = R3_6[2,0]
-    	    r32 = R3_6[2,1]
-    	    r33 = R3_6[2,2]
-
-    # Euler angles, cf. conventions in writeup    
-    	    theta6 = atan2( r21, r11).evalf()
-    	    theta5 = atan2(-r31, sqrt(r11**2 + r21**2)).evalf()
-    	    theta4 = atan2( r32, r33).evalf()
-
-		
-	    #addes the theta values to joint trajectory list
+	    theta4 = (atan2(R3_6[2,2], -R3_6[0,2])).evalf()
+	    theta6 = (atan2(-R3_6[1,1], R3_6[1,0])).evalf()
+	    theta5 = (atan2(sqrt(R3_6[0,2]*R3_6[0,2]+R3_6[2,2]*R3_6[2,2]),R3_6[1,2])).evalf()
+	   
+	    #adds the theta values to joint trajectory list
 	    joint_trajectory_point.positions = [theta1, theta2, theta3, theta4, theta5, theta6]
 	    joint_trajectory_list.append(joint_trajectory_point)
 
