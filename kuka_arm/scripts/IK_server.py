@@ -127,9 +127,17 @@ def handle_calculate_IK(req):
 	    R3_6 = R0_3.inv("LU")*ROT_EE
 
 	    #using the rotation matrix from 3 to 6, we can find the values for the remaining angle
-	    theta4 = atan2(R3_6[2,2], -R3_6[0,2])
-	    theta5 = atan2(sqrt(R3_6[0,2]*R3_6[0,2]+R3_6[2,2]*R3_6[2,2]),R3_6[1,2])
-	    theta6 = atan2(-R3_6[1,1], R3_6[1,0])
+	    r11 = R3_6[0,0]
+    	    r21 = R3_6[1,0]
+    	    r31 = R3_6[2,0]
+    	    r32 = R3_6[2,1]
+    	    r33 = R3_6[2,2]
+
+    # Euler angles, cf. conventions in writeup    
+    	    theta6 = atan2( r21, r11).evalf()
+    	    theta5 = atan2(-r31, sqrt(r11**2 + r21**2)).evalf()
+    	    theta4 = atan2( r32, r33).evalf()
+
 		
 	    #addes the theta values to joint trajectory list
 	    joint_trajectory_point.positions = [theta1, theta2, theta3, theta4, theta5, theta6]
